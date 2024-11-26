@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  pulsar:
+    image: apachepulsar/pulsar:2.8.0
+    command: >
+      sh -c "
+       bin/pulsar standalone &
+       sleep 60 &&
+       bin/pulsar-admin tenants create test-tenant &&
+       sleep 2 &&
+       bin/pulsar-admin namespaces create test-tenant/test-namespace &&
+       sleep 2 &&
+       wait"
+    ports:
+      - "6650:6650"
+      - "8081:8080"
+
+# List all tenants
+#  bin/pulsar-admin tenants list
+
+# List all namespaces for a specific tenant
+#  bin/pulsar-admin namespaces list test-tenant
+
+# List all topics for a specific namespace
+#  bin/pulsar-admin topics list test-tenant/test-namespace
+
+# Get the status on the topic
+#  create the topic bin/pulsar-admin topics create persistent://test-tenant/test-namespace/test-topic
+#  bin/pulsar-admin topics stats persistent://test-tenant/test-namespace/test-topic
